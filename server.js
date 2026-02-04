@@ -39,5 +39,7 @@ app.get('/register', (req, res) => {
 // Start Server
 app.listen(PORT, () => {
     console.log(`Serveur SmartChoice lancé sur le port ${PORT}`);
-    console.log(`URL: http://localhost:${PORT}`);
+    console.log(`URL locale: http://localhost:${PORT}`);
+    console.log(`URL publique: ${process.env.RAILWAY_PUBLIC_DOMAIN ? `https://${process.env.RAILWAY_PUBLIC_DOMAIN}` : 'URL Railway non configurée'}`);
+    console.log('🚀 Site e-commerce SmartChoice en ligne !');
 });
