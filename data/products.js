@@ -1,5 +1,3 @@
-const Product = require('../models/Product');
-
 const productsData = [
     // Apple
     {
@@ -21,7 +19,8 @@ const productsData = [
         ldlcUrl: 'https://www.ldlc.com/fiche/PB00374449.html',
         cdiscountUrl: 'https://www.cdiscount.com/iphone-15-pro-max-256-gb-titane-naturel',
         featured: true,
-        inStock: true
+        inStock: true,
+        createdAt: new Date('2024-01-15')
     },
     {
         name: 'Apple Watch Series 10 GPS 45mm',
@@ -39,7 +38,8 @@ const productsData = [
         fnacUrl: 'https://www.fnac.com/Apple-Watch-Series-10-GPS-45mm/a17061444',
         dartyUrl: 'https://www.darty.com/apple-watch-series-10-gps-45mm',
         featured: false,
-        inStock: true
+        inStock: true,
+        createdAt: new Date('2024-01-10')
     },
     // Samsung
     {
@@ -58,7 +58,8 @@ const productsData = [
         fnacUrl: 'https://www.fnac.com/Samsung-Galaxy-S24-Ultra-256GB/a17061444',
         dartyUrl: 'https://www.darty.com/samsung-galaxy-s24-ultra-256gb',
         featured: true,
-        inStock: true
+        inStock: true,
+        createdAt: new Date('2024-01-20')
     },
     {
         name: 'Samsung Odyssey G9 49" 240Hz Curved Gaming Monitor',
@@ -75,7 +76,8 @@ const productsData = [
         amazonUrl: 'https://www.amazon.fr/dp/B0CHX2Q1FQ',
         fnacUrl: 'https://www.fnac.com/Samsung-Odyssey-G9-49-240Hz/a17061444',
         featured: false,
-        inStock: true
+        inStock: true,
+        createdAt: new Date('2024-01-05')
     },
     // Sony
     {
@@ -94,7 +96,8 @@ const productsData = [
         fnacUrl: 'https://www.fnac.com/PlayStation-5-Slim-Console/a17061444',
         dartyUrl: 'https://www.darty.com/playstation-5-slim-console',
         featured: true,
-        inStock: true
+        inStock: true,
+        createdAt: new Date('2024-01-25')
     },
     // NVIDIA
     {
@@ -113,7 +116,8 @@ const productsData = [
         fnacUrl: 'https://www.fnac.com/NVIDIA-GeForce-RTX-4090-24GB/a17061444',
         ldlcUrl: 'https://www.ldlc.com/fiche/PB00374449.html',
         featured: true,
-        inStock: true
+        inStock: true,
+        createdAt: new Date('2024-01-30')
     },
     {
         name: 'NVIDIA GeForce RTX 4070 Ti 12GB',
@@ -130,7 +134,8 @@ const productsData = [
         amazonUrl: 'https://www.amazon.fr/dp/B0BGZJVLJQ',
         fnacUrl: 'https://www.fnac.com/NVIDIA-GeForce-RTX-4070-Ti/a17061444',
         featured: false,
-        inStock: true
+        inStock: true,
+        createdAt: new Date('2024-01-28')
     },
     // AMD
     {
@@ -148,7 +153,8 @@ const productsData = [
         amazonUrl: 'https://www.amazon.fr/dp/B0BGZJVLJQ',
         fnacUrl: 'https://www.fnac.com/AMD-Ryzen-9-7950X/a17061444',
         featured: true,
-        inStock: true
+        inStock: true,
+        createdAt: new Date('2024-01-22')
     },
     {
         name: 'AMD Ryzen 7 7700X 8 Cores 16 Threads',
@@ -165,27 +171,9 @@ const productsData = [
         amazonUrl: 'https://www.amazon.fr/dp/B0BGZJVLJQ',
         fnacUrl: 'https://www.fnac.com/AMD-Ryzen-7-7700X/a17061444',
         featured: false,
-        inStock: true
+        inStock: true,
+        createdAt: new Date('2024-01-18')
     }
 ];
 
-// Initialiser les produits dans la base de données
-async function initializeProducts() {
-    try {
-        await Product.deleteMany({}); // Nettoyer la collection
-        
-        for (const productData of productsData) {
-            const product = new Product(productData);
-            await product.save();
-        }
-        
-        console.log(`✅ ${productsData.length} produits initialisés avec succès`);
-        console.log('🌍 Produits de Apple, Samsung, Sony, NVIDIA, AMD');
-        console.log('🛍️ Tous les produits ont des liens d\'achat réels');
-        
-    } catch (error) {
-        console.error('❌ Erreur lors de l\'initialisation des produits:', error);
-    }
-}
-
-module.exports = { initializeProducts, productsData };
+module.exports = { productsData };
