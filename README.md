@@ -1,261 +1,174 @@
-# SmartChoice - Assistant d'Achat Intelligent
+# SmartChoice - E-commerce avec Intelligence Artificielle
 
-SmartChoice est une plateforme web intelligente destinée à aider les utilisateurs à choisir le produit le plus adapté à leur budget, leur classe sociale et la fiabilité du site vendeur.
+Site e-commerce moderne construit avec Node.js, Express, MongoDB et une API de reconnaissance d'objets.
 
-## Objectifs
+## 🚀 Fonctionnalités
 
-- Faciliter la prise de décision lors d'un achat en ligne
-- Protéger les utilisateurs contre les arnaques et les sites peu fiables
-- Proposer des recommandations adaptées au profil financier de l'utilisateur
-- Offrir une interface simple, intuitive et accessible
-- Développer un algorithme de recommandation multi-critères
+- **Catalogue de produits** avec 9 produits de marques premium (Apple, Samsung, Sony, NVIDIA, AMD)
+- **Recherche intelligente** par mots-clés avec mapping sémantique
+- **API Vision GRATUITE** pour identifier des objets depuis des photos
+- **Recherche de produits similaires** basée sur l'analyse d'images
+- **Système d'authentification** JWT
+- **Design responsive** moderne
+- **Liens d'achat réels** vers Amazon, Fnac, Darty, LDLC
 
-## Architecture
+## 🛠️ Stack Technique
 
-### Frontend
-- **HTML5** : Structure sémantique
-- **CSS3** : Design responsive avec variables CSS
-- **JavaScript** : Interactions et appels API
+- **Backend**: Node.js, Express.js
+- **Base de données**: MongoDB avec Mongoose
+- **Frontend**: HTML5, CSS3, JavaScript (Vanilla)
+- **Upload d'images**: Multer + Sharp
+- **Authentification**: JWT
+- **API Vision**: Analyse basique d'images (gratuite)
 
-### Backend
-- **Python Flask** : Serveur web et API REST
-- **SQLite** : Base de données légère
-- **Algorithme personnalisé** : Système de recommandation
+## 📦 Installation
+
+1. Clonez le repository
+```bash
+git clone https://github.com/xryki/smartchoice-ecommerce.git
+cd smartchoice-ecommerce
+```
+
+2. Installez les dépendances
+```bash
+npm install
+```
+
+3. Configurez les variables d'environnement
+```bash
+cp .env.example .env
+# Éditez .env avec vos configurations
+```
+
+4. Lancez MongoDB
+```bash
+# Sur Windows avec MongoDB Community Server
+# Sur Mac avec Homebrew: brew services start mongodb-community
+# Sur Linux: sudo systemctl start mongod
+```
+
+5. Initialisez la base de données
+```bash
+node seed.js
+```
+
+6. Lancez le serveur
+```bash
+npm start
+# ou en développement: npm run dev
+```
+
+## 🌐 Accès
+
+- **Site**: http://localhost:5000
+- **API Produits**: http://localhost:5000/api/products
+- **API Vision**: http://localhost:5000/api/vision/identify
+
+## 📱 Utilisation
+
+### Recherche de produits
+- Utilisez la barre de recherche avec des mots-clés intelligents
+- Exemples: "montre", "telephone", "carte graphique", "processeur"
+
+### API Vision
+1. Cliquez sur "Scanner un produit"
+2. Uploadez une photo d'un objet
+3. L'IA identifie l'objet et trouve des produits similaires
+
+### Mots-clés supportés
+- `montre` → Apple Watch
+- `telephone` → iPhone, Samsung Galaxy
+- `ordinateur` → MacBook, ASUS, HP
+- `console` → PlayStation 5
+- `carte graphique` → NVIDIA RTX
+- `processeur` → AMD Ryzen
+
+## 🚀 Déploiement
+
+### Railway (Recommandé)
+1. Push sur GitHub
+2. Connectez votre repo sur https://railway.app/
+3. Ajoutez la variable d'environnement: `PORT=5000`
+4. Déployez!
+
+### Render
+1. Push sur GitHub
+2. Connectez votre repo sur https://render.com/
+3. Configurez le build et start command
+4. Déployez!
 
 ## 📁 Structure du Projet
 
 ```
-smart choice/
-├── frontend/                 # Fichiers frontend
-│   ├── index.html           # Page d'accueil
-│   └── results.html         # Page de résultats
-├── backend/                 # Code backend
-│   ├── app.py              # Application Flask principale
-│   └── recommender.py      # Algorithme de recommandation
-├── database/               # Base de données
-│   └── models.py           # Modèles et initialisation
-├── static/                 # Fichiers statiques
+smartchoice-ecommerce/
+├── server.js              # Serveur principal
+├── package.json           # Dépendances
+├── .env                   # Variables d'environnement
+├── seed.js                # Initialisation BDD
+├── models/                # Modèles Mongoose
+│   ├── Product.js
+│   └── User.js
+├── routes/                # Routes Express
+│   ├── auth.js
+│   ├── products.js
+│   └── vision.js
+├── data/                  # Données initiales
+│   └── products.js
+├── public/                # Frontend
+│   ├── index.html
 │   ├── css/
-│   │   └── styles.css      # Styles principaux
+│   │   └── styles.css
 │   └── js/
-│       ├── script.js       # JavaScript page d'accueil
-│       └── results.js      # JavaScript page résultats
-├── requirements.txt        # Dépendances Python
-└── README.md              # Documentation
+│       └── main.js
+└── README.md
 ```
 
-## Installation et Démarrage
+## 🔧 API Endpoints
 
-### Prérequis
-- Python 3.8 ou supérieur
-- npm (optionnel, pour le développement)
+### Produits
+- `GET /api/products` - Tous les produits
+- `GET /api/products/featured` - Produits vedettes
+- `POST /api/products/search` - Recherche avancée
+- `GET /api/products/categories` - Catégories
+- `GET /api/products/brands` - Marques
 
-### Étapes d'installation
+### Authentification
+- `POST /api/auth/register` - Inscription
+- `POST /api/auth/login` - Connexion
+- `GET /api/auth/profile` - Profil utilisateur
 
-1. **Cloner le projet**
-   ```bash
-   git clone <repository-url>
-   cd "smart choice"
-   ```
+### Vision
+- `POST /api/vision/identify` - Identifier un objet depuis une image
 
-2. **Créer un environnement virtuel**
-   ```bash
-   python -m venv venv
-   
-   # Windows
-   venv\Scripts\activate
-   
-   # macOS/Linux
-   source venv/bin/activate
-   ```
+## 🎯 Fonctionnalités Uniques
 
-3. **Installer les dépendances**
-   ```bash
-   pip install -r requirements.txt
-   ```
+### API Vision Gratuite
+- Analyse le nom de fichier de l'image
+- Mapping intelligent vers des catégories de produits
+- Recherche automatique de produits similaires
+- Aucune dépendance externe requise
 
-4. **Initialiser la base de données**
-   ```bash
-   cd database
-   python models.py
-   cd ..
-   ```
+### Recherche Sémantique
+- Mapping de mots-clés (ex: "montre" → "apple watch")
+- Recherche multi-critères (nom, marque, description)
+- Tri par pertinence, prix, notation
 
-5. **Démarrer l'application**
-   ```bash
-   cd backend
-   python app.py
-   ```
+## 🛍️ Produits Disponibles
 
-6. **Accéder à l'application**
-   Ouvrez votre navigateur et allez sur : `http://localhost:5000`
-
-## Fonctionnalités
-
-### Fonctionnalités Principales
-- **Formulaire utilisateur** : Budget, classe sociale, produit, catégorie
-- **Recherche intelligente** : Analyse multi-critères des produits
-- **Comparaison des prix** : Trouver les meilleures offres
-- **Analyse de qualité** : Évaluation basée sur les notes et caractéristiques
-- **Fiabilité des vendeurs** : Filtrage des sites fiables
-- **Recommandations personnalisées** : Adaptées au profil utilisateur
-
-### Types de Recommandations
-- **Le moins cher** : Meilleur prix dans le budget
-- **Le plus fiable** : Vendeur le plus trustworthy
-- **Meilleure qualité** : Produit avec le meilleur score qualité
-- **Recommandation personnalisée** : Basée sur l'algorithme SmartChoice
-
-### Fonctionnalités Secondaires
-- **Filtrage par marque** : Affiner les recherches
-- **Tri multi-critères** : Prix, qualité, fiabilité, score global
-- **Design responsive** : Compatible mobile/desktop
-- **Interface moderne** : Design épuré et intuitif
-
-## Algorithme de Recommandation
-
-L'algorithme SmartChoice analyse plusieurs critères :
-
-### Critères Évalués
-1. **Prix** : Rapport qualité-prix
-2. **Qualité** : Score basé sur les avis et caractéristiques
-3. **Fiabilité** : Confiance dans le vendeur
-4. **Budget utilisateur** : Respect des contraintes financières
-5. **Classe sociale** : Pondération personnalisée
-
-### Pondération par Classe Sociale
-- **Classe faible** : 50% prix, 20% qualité, 30% fiabilité
-- **Classe moyenne** : 30% prix, 40% qualité, 30% fiabilité  
-- **Classe élevée** : 10% prix, 50% qualité, 40% fiabilité
-
-### Score Global
-Le score global est calculé selon la formule :
-```
-Score = (poids_prix × score_prix) + 
-        (poids_qualité × score_qualité) + 
-        (poids_fiabilité × score_fiabilité)
-```
-
-## API Endpoints
-
-### Recherche de produits
-```
-POST /api/search
-Content-Type: application/json
-
-{
-    "budget": 1000,
-    "social_class": "medium",
-    "product": "iPhone",
-    "category": "electronics"
-}
-```
-
-### Récupérer tous les produits
-```
-GET /api/products?category=electronics
-```
-
-### Catégories disponibles
-```
-GET /api/categories
-```
-
-### Marques disponibles
-```
-GET /api/brands?category=electronics
-```
-
-## Base de Données
-
-### Table Products
-| Champ | Type | Description |
-|-------|------|-------------|
-| id | INTEGER | ID unique |
-| name | TEXT | Nom du produit |
-| category | TEXT | Catégorie |
-| brand | TEXT | Marque |
-| price | REAL | Prix en euros |
-| rating | REAL | Note moyenne |
-| quality_score | INTEGER | Score qualité (0-100) |
-| site | TEXT | Site vendeur |
-| site_reliability | INTEGER | Fiabilité site (0-100) |
-
-## Design et UX
-
-### Principes de Design
-- **Clarté** : Information hiérarchisée et lisible
-- **Accessibilité** : Interface intuitive pour tous
-- **Responsive** : Adaptation mobile/tablette/desktop
-- **Performance** : Chargement rapide et interactions fluides
-
-### Couleurs et Thème
-- **Primaire** : Bleu trust (#2563eb)
-- **Secondaire** : Vert succès (#10b981)
-- **Accent** : Orange action (#f59e0b)
-- **Neutres** : Gris modernes pour le texte et fonds
-
-## 🧪 Tests
-
-### Tests Manuel
-1. **Test de recherche** : Vérifier les résultats de recherche
-2. **Test de recommandations** : Valider l'algorithme
-3. **Test responsive** : Vérifier l'affichage mobile
-4. **Test performance** : Mesurer les temps de réponse
-
-### Tests Automatisés (futur)
-```bash
-# Tests unitaires
-python -m pytest tests/
-
-# Tests d'intégration
-python -m pytest tests/integration/
-```
-
-## Améliorations Futures
-
-### Court Terme
-- [ ] Ajouter plus de produits dans la base
-- [ ] Améliorer l'algorithme de recommandation
-- [ ] Ajouter des filtres avancés
-- [ ] Historique des recherches
-
-### Moyen Terme
-- [ ] Comptes utilisateurs et préférences
-- [ ] Alertes de prix
-- [ ] Comparaison en temps réel
-- [ ] API externes (Amazon, etc.)
-
-### Long Terme
-- [ ] Machine Learning pour les recommandations
-- [ ] Application mobile native
-- [ ] Analyse des tendances
-- [ ] Communauté et avis
-
-## 🤝 Contribuer
-
-1. Fork le projet
-2. Créer une branche (`git checkout -b feature/amazing-feature`)
-3. Commit les changements (`git commit -m 'Add amazing feature'`)
-4. Push vers la branche (`git push origin feature/amazing-feature`)
-5. Ouvrir une Pull Request
+- **Apple**: iPhone 15 Pro Max, Apple Watch Series 10
+- **Samsung**: Galaxy S24 Ultra, Odyssey G9 Monitor
+- **Sony**: PlayStation 5 Slim
+- **NVIDIA**: RTX 4090, RTX 4070 Ti
+- **AMD**: Ryzen 9 7950X, Ryzen 7 7700X
 
 ## 📄 Licence
 
-Ce projet est réalisé dans le cadre d'un projet NSI (Numérique et Sciences Informatiques).
+MIT License
 
-## 👥 Équipe
+## 🤝 Contributeurs
 
-- **Développeur principal** : [Votre nom]
-- **Encadrant** : [Nom de l'encadrant]
-- **Établissement** : [Votre établissement]
-
-## 📞 Contact
-
-Pour toute question ou suggestion :
-- Email : [votre.email@example.com]
-- Projet GitHub : [lien vers le repository]
+SmartChoice Team
 
 ---
 
-**SmartChoice** - Votre assistant d'achat intelligent
+**SmartChoice** - L'e-commerce du futur avec intelligence artificielle! 🚀

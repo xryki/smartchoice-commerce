@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartChoice - E-commerce avec IA</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="logo">
+                    <h1><i class="fas fa-shopping-cart"></i> SmartChoice</h1>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="/" class="nav-link active">Accueil</a></li>
+                    <li><a href="/products" class="nav-link">Produits</a></li>
+                    <li><a href="#" class="nav-link" id="visionBtn">Recherche IA</a></li>
+                    <li><a href="/login" class="nav-link">Connexion</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-content">
+                <h2>Bienvenue sur SmartChoice</h2>
+                <p>L'e-commerce avec intelligence artificielle</p>
+                <div class="hero-buttons">
+                    <a href="/products" class="btn btn-primary">Voir les produits</a>
+                    <button class="btn btn-secondary" id="startVision">
+                        <i class="fas fa-camera"></i> Scanner un produit
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Featured Products -->
+        <section class="featured-products">
+            <div class="container">
+                <h3>Produits Vedettes</h3>
+                <div class="products-grid" id="featuredProducts">
+                    <!-- Products will be loaded here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Vision Modal -->
+        <div class="modal" id="visionModal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h3>Scanner un produit</h3>
+                <div class="upload-area" id="uploadArea">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <p>Glissez une image ici ou cliquez pour sélectionner</p>
+                    <input type="file" id="imageInput" accept="image/*" style="display: none;">
+                </div>
+                <div class="results" id="visionResults" style="display: none;">
+                    <h4>Résultats de l'analyse</h4>
+                    <div id="detectedObject"></div>
+                    <div class="similar-products" id="similarProducts"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 SmartChoice. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
