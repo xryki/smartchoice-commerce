@@ -14,6 +14,12 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Debug middleware
+app.use((req, res, next) => {
+    console.log(`${req.method} ${req.url}`);
+    next();
+});
+
 // Servir les fichiers statiques
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -21,26 +27,21 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/api/products', productRoutes);
 app.use('/api/vision', visionRoutes);
 
-// Routes Frontend
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
-
-app.get('/products', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
-
-app.get('/login', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
-
-app.get('/register', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
-
 // Route de test
 app.get('/test', (req, res) => {
     res.json({ message: 'SmartChoice API fonctionne!', timestamp: new Date() });
+});
+
+// Route racine
+app.get('/', (req, res) => {
+    console.log('Servir index.html depuis:', path.join(__dirname, 'public', 'index.html'));
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+// Toutes les autres routes retournent aussi index.html (SPA)
+app.get('*', (req, res) => {
+    console.log('Route catch-all:', req.url);
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 // Start Server
