@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug SmartChoice</title>
+</head>
+<body>
+    <h1>Test API SmartChoice</h1>
+    <button onclick="testSearch()">Tester recherche Apple</button>
+    <div id="results"></div>
+
+    <script>
+        async function testSearch() {
+            const data = {
+                budget: 1000,
+                social_class: "medium",
+                product: "Apple",
+                category: "electronics"
+            };
+
+            try {
+                const response = await fetch('/api/search', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+                const resultsDiv = document.getElementById('results');
+                
+                resultsDiv.innerHTML = `
+                    <h2>Found ${result.total_results} products</h2>
+                    <h3>Top 3 products:</h3>
+                    ${result.products.slice(0, 3).map(p => `
+                        <div style="border: 1px solid #ccc; margin: 10px; padding: 10px;">
+                            <h4>${p.name}</h4>
+                            <p>Price: ${p.price}€</p>
+                            <p>Brand: ${p.brand}</p>
+                            <p>Site: ${p.site}</p>
+                            <p><a href="${p.purchase_url}" target="_blank">Buy Now</a></p>
+                        </div>
+                    `).join('')}
+                `;
+            } catch (error) {
+                document.getElementById('results').innerHTML = `<p>Error: ${error.message}</p>`;
+            }
+        }
+    </script>
+</body>
+</html>

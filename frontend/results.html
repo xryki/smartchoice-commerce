@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Résultats - SmartChoice</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <h1>🛍️ SmartChoice</h1>
+            </div>
+            <nav class="nav">
+                <a href="/" class="nav-link">Accueil</a>
+                <a href="#" class="nav-link">Nouvelle recherche</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="search-section">
+            <div class="container">
+                <div class="search-form-container">
+                    <h2>Nouvelle recherche</h2>
+                    <form id="search-form" class="search-form">
+                        <div class="form-group">
+                            <label for="budget">Budget (€)</label>
+                            <input type="number" id="budget" name="budget" min="0" step="10" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="social-class">Classe sociale</label>
+                            <select id="social-class" name="social_class" required>
+                                <option value="">Sélectionner...</option>
+                                <option value="low">Faible</option>
+                                <option value="medium">Moyenne</option>
+                                <option value="high">Élevée</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="product">Produit recherché</label>
+                            <input type="text" id="product" name="product" placeholder="Ex: iPhone 15, Samsung TV..." required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="category">Catégorie</label>
+                            <select id="category" name="category" required>
+                                <option value="">Sélectionner...</option>
+                                <option value="electronics">Électronique</option>
+                                <option value="clothing">Vêtements</option>
+                                <option value="home">Maison</option>
+                                <option value="sports">Sports</option>
+                                <option value="books">Livres</option>
+                            </select>
+                        </div>
+                        
+                        <button type="submit" class="search-button">Rechercher</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <section id="results-section" class="results-section" style="display: none;">
+            <div class="container">
+                <div class="results-header">
+                    <h2>Résultats pour: <span id="search-query"></span></h2>
+                    <div class="filters">
+                        <select id="sort-filter">
+                            <option value="price">Prix croissant</option>
+                            <option value="quality">Qualité</option>
+                            <option value="reliability">Fiabilité</option>
+                            <option value="score">Score global</option>
+                        </select>
+                        <select id="brand-filter">
+                            <option value="">Toutes les marques</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="recommendations">
+                    <div class="recommendation-card" id="cheapest-card">
+                        <div class="card-header">
+                            <h3>Le moins cher</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="product-info">
+                                <h4 class="product-name"></h4>
+                                <p class="product-brand"></p>
+                                <p class="product-price"></p>
+                                <p class="product-site"></p>
+                            </div>
+                            <div class="product-metrics">
+                                <div class="metric">
+                                    <span class="metric-label">Qualité</span>
+                                    <div class="metric-bar">
+                                        <div class="metric-fill quality-fill"></div>
+                                    </div>
+                                    <span class="metric-value"></span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">Fiabilité</span>
+                                    <div class="metric-bar">
+                                        <div class="metric-fill reliability-fill"></div>
+                                    </div>
+                                    <span class="metric-value"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="recommendation-card" id="reliable-card">
+                        <div class="card-header">
+                            <h3>Le plus fiable</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="product-info">
+                                <h4 class="product-name"></h4>
+                                <p class="product-brand"></p>
+                                <p class="product-price"></p>
+                                <p class="product-site"></p>
+                            </div>
+                            <div class="product-metrics">
+                                <div class="metric">
+                                    <span class="metric-label">Qualité</span>
+                                    <div class="metric-bar">
+                                        <div class="metric-fill quality-fill"></div>
+                                    </div>
+                                    <span class="metric-value"></span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">Fiabilité</span>
+                                    <div class="metric-bar">
+                                        <div class="metric-fill reliability-fill"></div>
+                                    </div>
+                                    <span class="metric-value"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="recommendation-card" id="quality-card">
+                        <div class="card-header">
+                            <h3>Meilleure qualité</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="product-info">
+                                <h4 class="product-name"></h4>
+                                <p class="product-brand"></p>
+                                <p class="product-price"></p>
+                                <p class="product-site"></p>
+                            </div>
+                            <div class="product-metrics">
+                                <div class="metric">
+                                    <span class="metric-label">Qualité</span>
+                                    <div class="metric-bar">
+                                        <div class="metric-fill quality-fill"></div>
+                                    </div>
+                                    <span class="metric-value"></span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">Fiabilité</span>
+                                    <div class="metric-bar">
+                                        <div class="metric-fill reliability-fill"></div>
+                                    </div>
+                                    <span class="metric-value"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="recommendation-card featured" id="personalized-card">
+                        <div class="card-header">
+                            <h3>Recommandation personnalisée</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="product-info">
+                                <h4 class="product-name"></h4>
+                                <p class="product-brand"></p>
+                                <p class="product-price"></p>
+                                <p class="product-site"></p>
+                            </div>
+                            <div class="product-metrics">
+                                <div class="metric">
+                                    <span class="metric-label">Qualité</span>
+                                    <div class="metric-bar">
+                                        <div class="metric-fill quality-fill"></div>
+                                    </div>
+                                    <span class="metric-value"></span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">Fiabilité</span>
+                                    <div class="metric-bar">
+                                        <div class="metric-fill reliability-fill"></div>
+                                    </div>
+                                    <span class="metric-value"></span>
+                                </div>
+                            </div>
+                            <div class="recommendation-reason">
+                                <p><strong>Pourquoi ce produit ?</strong></p>
+                                <p class="reason-text"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="all-products" id="all-products">
+                    <h3>Tous les produits</h3>
+                    <div class="products-grid" id="products-grid">
+                        <!-- Products will be dynamically added here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div id="loading" class="loading" style="display: none;">
+            <div class="spinner"></div>
+            <p>Recherche en cours...</p>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 SmartChoice - Projet NSI</p>
+        </div>
+    </footer>
+
+    <script src="/static/js/results.js"></script>
+</body>
+</html>
