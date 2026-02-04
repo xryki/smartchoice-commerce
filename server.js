@@ -40,6 +40,7 @@ app.get('/register', (req, res) => {
 app.listen(PORT, () => {
     console.log(`Serveur SmartChoice lancé sur le port ${PORT}`);
     console.log(`URL locale: http://localhost:${PORT}`);
-    console.log(`URL publique: ${process.env.RAILWAY_PUBLIC_DOMAIN ? `https://${process.env.RAILWAY_PUBLIC_DOMAIN}` : 'URL Railway non configurée'}`);
+    console.log(`URL publique: ${process.env.RAILWAY_PUBLIC_DOMAIN ? `https://${process.env.RAILWAY_PUBLIC_DOMAIN}` : process.env.PUBLIC_URL ? process.env.PUBLIC_URL : 'URL Railway non configurée'}`);
+    console.log(`Toutes les variables: PORT=${process.env.PORT}, RAILWAY_PUBLIC_DOMAIN=${process.env.RAILWAY_PUBLIC_DOMAIN}, PUBLIC_URL=${process.env.PUBLIC_URL}`);
     console.log('🚀 Site e-commerce SmartChoice en ligne !');
 });
