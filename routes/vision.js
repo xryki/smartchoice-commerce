@@ -1,8 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
-const sharp = require('sharp');
-const Product = require('../models/Product');
+const { productsData } = require('../data/products');
 
 // Configuration de multer pour l'upload d'images
 const storage = multer.memoryStorage();
@@ -14,12 +13,6 @@ router.post('/identify', upload.single('image'), async (req, res) => {
         if (!req.file) {
             return res.status(400).json({ error: 'Aucune image fournie' });
         }
-        
-        // Traitement de l'image avec sharp
-        const processedImage = await sharp(req.file.buffer)
-            .resize(800, 800, { fit: 'inside' })
-            .jpeg({ quality: 80 })
-            .toBuffer();
         
         // Analyse basique de l'image (simulation)
         const detection = analyzeImage(req.file.originalname);
@@ -91,25 +84,22 @@ async function findSimilarProducts(detection) {
         
         // Rechercher pour chaque mot-clé
         for (const keyword of keywords) {
-            const products = await Product.find({
-                $or: [
-                    { name: { $regex: keyword, $options: 'i' } },
-                    { brand: { $regex: keyword, $options: 'i' } },
-                    { description: { $regex: keyword, $options: 'i' } }
-                ],
-                inStock: true
+            const products = productsData.filter(product => {
+                return product.name.toLowerCase().includes(keyword) ||
+                       product.brand.toLowerCase().includes(keyword) ||
+                       (product.description && product.description.toLowerCase().includes(keyword));
             });
             allProducts = allProducts.concat(products);
         }
         
         // Éliminer les doublons
         const uniqueProducts = [];
-        const seenIds = new Set();
+        const seenNames = new Set();
         
         for (const product of allProducts) {
-            if (!seenIds.has(product._id.toString())) {
+            if (!seenNames.has(product.name)) {
                 uniqueProducts.push(product);
-                seenIds.add(product._id.toString());
+                seenNames.add(product.name);
             }
         }
         
@@ -121,7 +111,7 @@ async function findSimilarProducts(detection) {
             return b.reviewCount - a.reviewCount;
         });
         
-        return uniqueProducts.slice(0, 12);
+        return uniqueProducts.filter(p => p.inStock).slice(0, 12);
         
     } catch (error) {
         console.error('Erreur recherche produits:', error);

@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const Product = require('../models/Product');
+const { productsData } = require('../data/products');
 
 // Obtenir tous les produits
 router.get('/', async (req, res) => {
     try {
-        const products = await Product.find({ inStock: true });
+        const products = productsData.filter(p => p.inStock);
         res.json({
             products,
             total: products.length
@@ -18,9 +18,10 @@ router.get('/', async (req, res) => {
 // Obtenir les produits vedettes
 router.get('/featured', async (req, res) => {
     try {
-        const products = await Product.find({ featured: true, inStock: true })
-            .sort({ rating: -1, reviewCount: -1 })
-            .limit(8);
+        const products = productsData
+            .filter(p => p.featured && p.inStock)
+            .sort((a, b) => b.rating - a.rating)
+            .slice(0, 8);
         res.json({
             products,
             total: products.length
@@ -35,7 +36,7 @@ router.post('/search', async (req, res) => {
     try {
         const { query, category, brand, minPrice, maxPrice, sortBy = 'relevance' } = req.body;
         
-        let searchQuery = { inStock: true };
+        let products = productsData.filter(p => p.inStock);
         
         // Recherche par mots-clés intelligente
         if (query) {
@@ -73,46 +74,48 @@ router.post('/search', async (req, res) => {
                 }
             }
             
-            searchQuery.$or = [
-                { name: { $regex: searchTerms.join('|'), $options: 'i' } },
-                { brand: { $regex: searchTerms.join('|'), $options: 'i' } },
-                { description: { $regex: searchTerms.join('|'), $options: 'i' } }
-            ];
+            products = products.filter(product => {
+                return searchTerms.some(term => 
+                    product.name.toLowerCase().includes(term) ||
+                    product.brand.toLowerCase().includes(term) ||
+                    (product.description && product.description.toLowerCase().includes(term))
+                );
+            });
         }
         
-        if (category) searchQuery.category = category;
-        if (brand) searchQuery.brand = brand;
-        if (minPrice) searchQuery.price = { $gte: minPrice };
-        if (maxPrice) searchQuery.price = { ...searchQuery.price, $lte: maxPrice };
+        if (category) products = products.filter(p => p.category === category);
+        if (brand) products = products.filter(p => p.brand === brand);
+        if (minPrice) products = products.filter(p => p.price >= minPrice);
+        if (maxPrice) products = products.filter(p => p.price <= maxPrice);
         
         // Tri
-        let sortOptions = {};
         switch (sortBy) {
             case 'price_low':
-                sortOptions = { price: 1 };
+                products.sort((a, b) => a.price - b.price);
                 break;
             case 'price_high':
-                sortOptions = { price: -1 };
+                products.sort((a, b) => b.price - a.price);
                 break;
             case 'rating':
-                sortOptions = { rating: -1 };
+                products.sort((a, b) => b.rating - a.rating);
                 break;
             case 'newest':
-                sortOptions = { createdAt: -1 };
+                products.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
                 break;
             case 'discount':
-                sortOptions = { discountPercentage: -1 };
+                products.sort((a, b) => b.discountPercentage - a.discountPercentage);
                 break;
             default: // relevance
-                sortOptions = { featured: -1, rating: -1, reviewCount: -1 };
+                products.sort((a, b) => {
+                    if (a.featured && !b.featured) return -1;
+                    if (!a.featured && b.featured) return 1;
+                    if (a.rating !== b.rating) return b.rating - a.rating;
+                    return b.reviewCount - a.reviewCount;
+                });
         }
         
-        const products = await Product.find(searchQuery)
-            .sort(sortOptions)
-            .limit(50);
-        
         res.json({
-            products,
+            products: products.slice(0, 50),
             total: products.length,
             query
         });
@@ -124,7 +127,7 @@ router.post('/search', async (req, res) => {
 // Obtenir les catégories
 router.get('/categories', async (req, res) => {
     try {
-        const categories = await Product.distinct('category', { inStock: true });
+        const categories = [...new Set(productsData.filter(p => p.inStock).map(p => p.category))];
         res.json({ categories: categories.sort() });
     } catch (error) {
         res.status(500).json({ error: 'Erreur lors de la récupération des catégories' });
@@ -135,8 +138,9 @@ router.get('/categories', async (req, res) => {
 router.get('/brands', async (req, res) => {
     try {
         const { category } = req.query;
-        const query = category ? { category, inStock: true } : { inStock: true };
-        const brands = await Product.distinct('brand', query);
+        let products = productsData.filter(p => p.inStock);
+        if (category) products = products.filter(p => p.category === category);
+        const brands = [...new Set(products.map(p => p.brand))];
         res.json({ brands: brands.sort() });
     } catch (error) {
         res.status(500).json({ error: 'Erreur lors de la récupération des marques' });
