@@ -3,7 +3,6 @@ const cors = require('cors');
 const path = require('path');
 
 // Routes
-const authRoutes = require('./routes/auth');
 const productRoutes = require('./routes/products');
 const visionRoutes = require('./routes/vision');
 
@@ -17,7 +16,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Routes
-app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/vision', visionRoutes);
 
